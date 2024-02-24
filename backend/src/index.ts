@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import v1Router from './routes/v1'
+import { v1Router } from './routes'
 
 const app = new Hono()
 
