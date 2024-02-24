@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
 import { signinSchema, signupSchema } from '.'
+import { getPrismaClient } from '../db'
 
 const v1Router = new Hono<{
     Bindings: {
@@ -19,9 +18,7 @@ v1Router.post('/signup', async (c) => {
         })
     }
 
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL
-    }).$extends(withAccelerate())
+    const prisma = getPrismaClient(c)
 
     const existingUser = await prisma.user.findFirst({
         where: {
@@ -58,9 +55,7 @@ v1Router.post('/signin', async (c) => {
         })
     }
 
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL
-    }).$extends(withAccelerate())
+    const prisma = getPrismaClient(c)
 
     const existingUser = await prisma.user.findFirst({
         where: {
