@@ -1,16 +1,16 @@
 import { Hono } from 'hono'
-import { signinSchema, signupSchema } from '.'
-import { getPrismaClient } from '../db'
 import { sign } from 'hono/jwt'
+import { getPrismaClient } from '../db'
+import { signinSchema, signupSchema } from '.'
 
-const v1Router = new Hono<{
+const userRouter = new Hono<{
     Bindings: {
         JWT_SECRET: string
         DATABASE_URL: string
     }
 }>()
 
-v1Router.post('/signup', async (c) => {
+userRouter.post('/signup', async (c) => {
     const result = signupSchema.safeParse(await c.req.json())
 
     if (!result.success) {
@@ -49,7 +49,7 @@ v1Router.post('/signup', async (c) => {
     })
 })
 
-v1Router.post('/signin', async (c) => {
+userRouter.post('/signin', async (c) => {
     const result = signinSchema.safeParse(await c.req.json())
 
     if (!result.success) {
@@ -80,16 +80,4 @@ v1Router.post('/signin', async (c) => {
     })
 })
 
-v1Router.post('/blog', (c) => {
-    return c.json({})
-})
-
-v1Router.put('/blog', (c) => {
-    return c.json({})
-})
-
-v1Router.get('/blog/:id', (c) => {
-    return c.json({})
-})
-
-export default v1Router
+export default userRouter

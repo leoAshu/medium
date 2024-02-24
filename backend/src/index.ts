@@ -1,8 +1,15 @@
 import { Hono } from 'hono'
-import { v1Router } from './routes'
+import { userRouter, blogRouter } from './routes'
 
 const app = new Hono()
 
-app.route('/api/v1', v1Router)
+app.get('/', (c) => {
+    return c.json({
+        status: 'Live',
+    })
+})
+
+app.route('/api/v1', userRouter)
+app.route('/api/v1/blog', blogRouter)
 
 export default app
