@@ -1,9 +1,11 @@
 import { Hono } from 'hono'
 import { signinSchema, signupSchema } from '.'
 import { getPrismaClient } from '../db'
+import { sign } from 'hono/jwt'
 
 const v1Router = new Hono<{
     Bindings: {
+        JWT_SECRET: string
         DATABASE_URL: string
     }
 }>()
@@ -14,7 +16,7 @@ v1Router.post('/signup', async (c) => {
     if (!result.success) {
         return c.json({
             errorField: result.error.issues[0].path[0],
-            errorMessage: result.error.issues[0].message
+            errorMessage: result.error.issues[0].message,
         })
     }
 
@@ -22,13 +24,13 @@ v1Router.post('/signup', async (c) => {
 
     const existingUser = await prisma.user.findFirst({
         where: {
-            email: result.data.email
-        }
+            email: result.data.email,
+        },
     })
 
     if (existingUser) {
         return c.json({
-            error: 'Email already exists!'
+            error: 'Email already exists!',
         })
     }
 
@@ -36,12 +38,14 @@ v1Router.post('/signup', async (c) => {
         data: {
             email: result.data.email,
             password: result.data.password,
-            name: result.data.name
-        }
+            name: result.data.name,
+        },
     })
 
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET)
+
     return c.json({
-        token: 'token'
+        token,
     })
 })
 
@@ -51,7 +55,7 @@ v1Router.post('/signin', async (c) => {
     if (!result.success) {
         return c.json({
             errorField: result.error.issues[0].path[0],
-            errorMessage: result.error.issues[0].message
+            errorMessage: result.error.issues[0].message,
         })
     }
 
@@ -59,18 +63,20 @@ v1Router.post('/signin', async (c) => {
 
     const existingUser = await prisma.user.findFirst({
         where: {
-            email: result.data.email
-        }
+            email: result.data.email,
+        },
     })
 
     if (!existingUser) {
         return c.json({
-            error: 'User does not exist!'
+            error: 'User does not exist!',
         })
     }
 
+    const token = await sign({ id: existingUser.id }, c.env.JWT_SECRET)
+
     return c.json({
-        token: 'token'
+        token,
     })
 })
 
