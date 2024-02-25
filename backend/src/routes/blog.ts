@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { getPrismaClient } from '../db'
-import { createPostSchema, updatePostSchema } from '.'
 import { authMiddleware } from '../middlewares'
+import { createPostInput, updatePostInput } from '@ashu_leo/common'
 
 const blogRouter = new Hono<{
     Bindings: {
@@ -20,7 +20,7 @@ blogRouter.get('/', async (c) => {
 })
 
 blogRouter.post('/', authMiddleware, async (c) => {
-    const result = createPostSchema.safeParse(await c.req.json())
+    const result = createPostInput.safeParse(await c.req.json())
 
     if (!result.success) {
         return c.json({
@@ -41,7 +41,7 @@ blogRouter.post('/', authMiddleware, async (c) => {
 })
 
 blogRouter.put('/', authMiddleware, async (c) => {
-    const result = updatePostSchema.safeParse(await c.req.json())
+    const result = updatePostInput.safeParse(await c.req.json())
 
     if (!result.success) {
         return c.json({

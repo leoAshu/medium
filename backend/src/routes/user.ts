@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { sign } from 'hono/jwt'
 import { getPrismaClient } from '../db'
-import { signinSchema, signupSchema } from '.'
+import { signinInput, signupInput } from '@ashu_leo/common'
 
 const userRouter = new Hono<{
     Bindings: {
@@ -11,7 +11,7 @@ const userRouter = new Hono<{
 }>()
 
 userRouter.post('/signup', async (c) => {
-    const result = signupSchema.safeParse(await c.req.json())
+    const result = signupInput.safeParse(await c.req.json())
 
     if (!result.success) {
         return c.json({
@@ -50,7 +50,7 @@ userRouter.post('/signup', async (c) => {
 })
 
 userRouter.post('/signin', async (c) => {
-    const result = signinSchema.safeParse(await c.req.json())
+    const result = signinInput.safeParse(await c.req.json())
 
     if (!result.success) {
         return c.json({
