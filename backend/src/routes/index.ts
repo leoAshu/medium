@@ -13,4 +13,15 @@ const signinSchema = zod.object({
     password: zod.string(),
 })
 
-export { signupSchema, signinSchema, blogRouter, userRouter }
+const createPostSchema = zod.object({
+    title: zod.string(),
+    content: zod.string(),
+})
+
+const updatePostSchema = zod.object({
+    id: zod.string(),
+    title: zod.string(),
+    content: zod.string(),
+})
+
+export { signupSchema, signinSchema, createPostSchema, updatePostSchema, blogRouter, userRouter }

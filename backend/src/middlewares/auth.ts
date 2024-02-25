@@ -4,8 +4,9 @@ import { getPrismaClient } from '../db'
 
 const authMiddleware: MiddlewareHandler = async (c, next) => {
     try {
-        const token = c.req.header('Authorizaation')?.split(' ')[1] ?? ''
-        const userId = await verify(token, c.env.JWT_SECRET)
+        const token = c.req.header('Authorization')?.split(' ')[1] ?? ''
+
+        const { userId } = await verify(token, c.env.JWT_SECRET)
 
         const userExists = await getPrismaClient(c).user.findFirst({ where: { id: userId } })
         if (!userExists) {
