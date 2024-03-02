@@ -13,12 +13,6 @@ const blogRouter = new Hono<{
     }
 }>()
 
-blogRouter.get('/', async (c) => {
-    const posts = await getPrismaClient(c).post.findMany({})
-
-    return c.json({ posts })
-})
-
 blogRouter.post('/', authMiddleware, async (c) => {
     const result = createPostInput.safeParse(await c.req.json())
 
@@ -61,6 +55,12 @@ blogRouter.put('/', authMiddleware, async (c) => {
     })
 
     return c.json({ message: 'Post updated!' })
+})
+
+blogRouter.get('/bulk', async (c) => {
+    const posts = await getPrismaClient(c).post.findMany({})
+
+    return c.json({ posts })
 })
 
 blogRouter.get('/:id', async (c) => {

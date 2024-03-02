@@ -9,7 +9,7 @@ app.get('/', (c) => {
     })
 })
 
-app.route('/api/v1', userRouter)
+app.route('/api/v1/user', userRouter)
 app.route('/api/v1/blog', blogRouter)
 
 export default app
