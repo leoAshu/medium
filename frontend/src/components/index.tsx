@@ -1,3 +1,4 @@
+import Auth from "./Auth"
 import Quote from "./Quote"
 
-export { Quote }
+export { Auth, Quote }

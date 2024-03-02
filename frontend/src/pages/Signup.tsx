@@ -1,9 +1,11 @@
-import { Quote } from "../components"
+import { Auth, Quote } from "../components"
 
 const Signup = () => {
     return (
         <div className="grid grid-cols-2">
-            <div></div>
+            <div>
+                <Auth type="signup" />
+            </div>
             <div className="invisible lg:visible">
                 <Quote />
             </div>
