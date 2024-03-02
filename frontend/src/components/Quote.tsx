@@ -6,7 +6,7 @@ const Quote = () => {
                     "The customer service I received was exceptional. The
                     support team went above and beyond to address my concerns."
                 </div>
-                <div className="my-1 text-lg font-semibold">
+                <div className="mt-4 text-lg font-semibold">
                     Julies Winfield
                 </div>
                 <div className="text-sm font-light text-slate-400">
