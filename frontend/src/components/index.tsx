@@ -1,4 +1,4 @@
-import Auth from "./Auth"
-import Quote from "./Quote"
+import Auth from './Auth'
+import Quote from './Quote'
 
 export { Auth, Quote }

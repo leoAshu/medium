@@ -1,4 +1,4 @@
-import { Auth, Quote } from "../components"
+import { Auth, Quote } from '../components'
 
 const Signup = () => {
     return (
