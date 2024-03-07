@@ -1,4 +1,8 @@
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { SigninType, SignupType } from '@ashu_leo/common'
+
+import cfg from '../../config'
 import { AuthHeader, AuthType, SigninForm, SignupForm } from '.'
 
 interface AuthCardProps {
@@ -6,9 +10,28 @@ interface AuthCardProps {
 }
 
 const AuthCard = ({ type }: AuthCardProps) => {
-    const sendRequest = (payload: SigninType | SignupType) => {
-        console.log(payload)
-        alert(JSON.stringify(payload))
+    const navigate = useNavigate()
+
+    const sendRequest = async (payload: SigninType | SignupType) => {
+        const url = `${cfg.API_BASE_URL}/${
+            type === AuthType.SIGNIN ? cfg.SIGNIN_ENDPOINT : cfg.SIGNUP_ENDPOINT
+        }`
+
+        try {
+            const response = await axios.post(url, payload)
+            const token = response.data.token
+
+            if (response.data.error) {
+                alert(response.data.error)
+                return
+            }
+
+            console.log('token: ', token)
+            localStorage.setItem(cfg.JWT_KEY, token)
+            navigate('/blogs')
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return (
