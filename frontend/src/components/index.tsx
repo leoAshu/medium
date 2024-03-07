@@ -1,4 +1,4 @@
-import Auth from './Auth'
 import Quote from './Quote'
+import { AuthCard, AuthType } from './auth'
 
-export { Auth, Quote }
+export { Quote, AuthCard, AuthType }
